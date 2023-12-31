@@ -13,7 +13,6 @@
 #
 # Includes:
 # * Java 8
-# * Python (3.8.5)
 
 FROM ubuntu:20.04
 
@@ -23,22 +22,14 @@ ENV DEBCONF_NONINTERACTIVE_SEEN true
 ENV LANG C.UTF-8
 
 # These arguments are just for reuse and not really meant to be customized.
+ARG TARGETPLATFORM
 ARG APT_INSTALL="apt-get install --no-install-recommends -y"
 
-ARG PIP_PKGS="openspg-knext==0.0.1-beta1"
-
 RUN apt-get clean && apt-get update && \
+    $APT_INSTALL git less vim && \
     # Install openjdk 8.
     $APT_INSTALL openjdk-8-jdk && \
-    update-alternatives --set java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java && \
-    # Install build / source control tools
-    $APT_INSTALL wget git maven less vim && \
-    # Install needed python packages. Use pip for installing packages (for consistency).
-    $APT_INSTALL python3.8 python3-pip
-
-# It is specified here to install all packages in /usr/lib/python3.8/site-packages path,
-# otherwise pemja will report an error because the package cannot be found.
-RUN pip3 install --target=/usr/lib/python3.8/site-packages $PIP_PKGS
+    update-alternatives --set java /usr/lib/jvm/java-8-openjdk-`echo $TARGETPLATFORM | cut -d'/' -f2`/jre/bin/java
 
 EXPOSE 8887
 

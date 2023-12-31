@@ -15,7 +15,7 @@ from knext.api.component import (
     CSVReader,
     KGWriter,
     SPGTypeMapping,
-    RelationMappingComponent,
+    RelationMapping,
 )
 from schema.supplychain_schema_helper import SupplyChain
 
@@ -73,7 +73,7 @@ class CompanyFundTrans(BuilderJob):
         )
 
         mapping = (
-            RelationMappingComponent(
+            RelationMapping(
                 subject_name=SupplyChain.Company,
                 predicate_name="fundTrans",
                 object_name=SupplyChain.Company,

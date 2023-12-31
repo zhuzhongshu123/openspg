@@ -16,7 +16,7 @@ from knext.api.component import (
     KGWriter,
     SPGTypeMapping,
 )
-from knext.examples.riskmining.schema.riskmining_schema_helper import RiskMining
+from schema.riskmining_schema_helper import RiskMining
 
 
 class TaxOfRiskApp(BuilderJob):
