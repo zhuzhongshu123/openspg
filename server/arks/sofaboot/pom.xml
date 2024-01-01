@@ -67,7 +67,7 @@
         <version>2.5.7</version>
         <configuration>
           <includeSystemScope>true</includeSystemScope>
-          <outputDirectory>../../../dev/release/openspg/target</outputDirectory>
+          <outputDirectory>../../../dev/release/server/target</outputDirectory>
           <classifier>executable</classifier>
         </configuration>
         <executions>
