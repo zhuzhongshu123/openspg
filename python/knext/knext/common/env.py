@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright 2023 Ant Group CO., Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +17,7 @@ from pathlib import Path
 from typing import Union, Optional
 
 
-GLOBAL_CONFIG = ["host_addr"]
+GLOBAL_CONFIG = ["host_addr", "graph_store_url", "search_engine_url"]
 LOCAL_CONFIG = [
     "project_name",
     "project_id",
@@ -45,11 +46,13 @@ def init_env():
 
     if project_cfg.has_section("global"):
         for cfg in GLOBAL_CONFIG:
-            os.environ[CFG_PREFIX + cfg.upper()] = project_cfg.get("global", cfg)
+            if project_cfg.has_option("global", cfg):
+                os.environ[CFG_PREFIX + cfg.upper()] = project_cfg.get("global", cfg)
 
     if project_cfg.has_section("local"):
         for cfg in LOCAL_CONFIG:
-            os.environ[CFG_PREFIX + cfg.upper()] = project_cfg.get("local", cfg)
+            if project_cfg.has_option("local", cfg):
+                os.environ[CFG_PREFIX + cfg.upper()] = project_cfg.get("local", cfg)
 
         os.environ[CFG_PREFIX + "ROOT_PATH"] = str(root_path.resolve())
 
@@ -112,6 +115,9 @@ def get_cfg_files():
 
 
 def load_operator():
+    """
+    Load all operators in [builder_operator_dir].
+    """
     from knext.operator.base import BaseOp
     from knext.operator import builtin
 
@@ -130,6 +136,9 @@ def load_operator():
 
 
 def load_builder_job():
+    """
+    Load all builder jobs in [builder_job_dir].
+    """
     from knext.client.model.builder_job import BuilderJob
 
     if not BuilderJob._has_registered and (

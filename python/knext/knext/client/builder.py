@@ -93,13 +93,8 @@ class BuilderClient(Client):
             os.environ.get("KNEXT_SEARCH_ENGINE_URL") or lib.LOCAL_SEARCH_ENGINE_URL,
         ]
 
-        print_java_cmd = [
-            cmd if not cmd.startswith("{") else f"'{cmd}'" for cmd in java_cmd
-        ]
-        print_java_cmd = [
-            cmd if not cmd.count(";") > 0 else f"'{cmd}'" for cmd in print_java_cmd
-        ]
-        # print(json.dumps(" ".join(print_java_cmd))[1:-1].replace("'", '"'))
+        if kwargs.get("lead_to"):
+            java_cmd.append("--leadTo")
 
         subprocess.call(java_cmd)
 
