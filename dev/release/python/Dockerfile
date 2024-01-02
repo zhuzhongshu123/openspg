@@ -34,3 +34,8 @@ RUN apt-get clean && apt-get update && \
 # otherwise pemja will report an error because the package cannot be found.
 RUN pip3 install --target=/usr/lib/python3.8/site-packages $PIP_PKGS
 
+RUN knext config set --global graph_store_url="tugraph://tugraph:9090?graphName=default&timeout=50000&accessId=admin&accessKey=73@TuGraph" && \
+    knext config set --global search_engine_url="elasticsearch://elasticsearch:9200?scheme=http" && \
+    knext config set --global host_addr="http://server:8887"
+
+RUN git clone --depth=1 https://github.com/OpenSPG/openspg.git

@@ -17,5 +17,5 @@ networkx==3.1
 pydantic==2.5.2
 requests==2.31.0
 setuptools==60.2.0
-
+openspg-nn4k==0.0.2-beta1
 Jinja2==3.1.2
