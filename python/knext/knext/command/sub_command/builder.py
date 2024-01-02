@@ -46,7 +46,12 @@ def execute_job(job_names):
     for job in job_list:
         builder_job = BuilderJob.by_name(job)()
         builder_chain = builder_job.build()
-        builder_chain.invoke(builder_chain)
+        params = {
+            param: getattr(builder_job, param)
+            for param in builder_job.__annotations__
+            if hasattr(builder_job, param) and not param.startswith("_")
+        }
+        builder_chain.invoke(builder_chain, **params)
 
 
 @click.option("--id", help="Unique id of submitted builder job.")
@@ -74,9 +79,9 @@ def get_job(id):
         sys.exit()
 
     if (
-        res[0].status in ["SUCCESS", "FAILURE"]
-        and res[0].result
-        and res[0].result.error_table_file
+            res[0].status in ["SUCCESS", "FAILURE"]
+            and res[0].result
+            and res[0].result.error_table_file
     ):
         confirm = click.style(
             f"BuilderJob instance with id [{res[0].job_inst_id}] execution completed. "
