@@ -8,4 +8,3 @@ streamlit==1.29.0
 torch==2.1.2
 transformers==4.33.1
 transformers_stream_generator==0.0.4
-xformers==0.0.23.post1

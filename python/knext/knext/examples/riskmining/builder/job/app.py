@@ -11,7 +11,7 @@
 # or implied.
 from knext.client.model.builder_job import BuilderJob
 from knext.component.builder import CSVReader, SPGTypeMapping, KGWriter
-from knext.examples.riskmining.schema.riskmining_schema_helper import RiskMining
+from schema.riskmining_schema_helper import RiskMining
 
 
 class App(BuilderJob):

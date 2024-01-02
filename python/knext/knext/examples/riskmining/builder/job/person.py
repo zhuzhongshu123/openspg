@@ -13,7 +13,7 @@
 from knext.client.model.builder_job import BuilderJob
 from knext.api.component import SPGTypeMapping
 from knext.api.component import CSVReader, KGWriter, RelationMapping
-from knext.examples.riskmining.schema.riskmining_schema_helper import RiskMining
+from schema.riskmining_schema_helper import RiskMining
 
 
 class Person(BuilderJob):

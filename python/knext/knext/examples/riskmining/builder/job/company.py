@@ -17,7 +17,7 @@ from knext.api.component import (
     KGWriter,
 )
 from knext.component.builder import RelationMapping
-from knext.examples.riskmining.schema.riskmining_schema_helper import RiskMining
+from schema.riskmining_schema_helper import RiskMining
 
 
 class Company(BuilderJob):

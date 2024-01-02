@@ -120,6 +120,7 @@ def load_operator():
     """
     from knext.operator.base import BaseOp
     from knext.operator import builtin
+
     if not BaseOp._has_registered and (
         "KNEXT_ROOT_PATH" in os.environ and "KNEXT_BUILDER_OPERATOR_DIR" in os.environ
     ):
