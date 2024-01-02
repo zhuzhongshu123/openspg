@@ -45,7 +45,7 @@ class StateFuse(FuseOp):
         return linked_records
 
     def merge(
-            self, subject_record: SPGRecord, linked_records: List[SPGRecord]
+        self, subject_record: SPGRecord, linked_records: List[SPGRecord]
     ) -> List[SPGRecord]:
         merged_records = [subject_record]
         print("StateFuse(Output): ")

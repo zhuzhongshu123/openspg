@@ -79,9 +79,9 @@ def get_job(id):
         sys.exit()
 
     if (
-            res[0].status in ["SUCCESS", "FAILURE"]
-            and res[0].result
-            and res[0].result.error_table_file
+        res[0].status in ["SUCCESS", "FAILURE"]
+        and res[0].result
+        and res[0].result.error_table_file
     ):
         confirm = click.style(
             f"BuilderJob instance with id [{res[0].job_inst_id}] execution completed. "
