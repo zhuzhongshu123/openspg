@@ -28,14 +28,11 @@ RUN apt-get clean && apt-get update && \
     # Install build / source control tools
     $APT_INSTALL wget git maven less vim && \
     # Install needed python packages. Use pip for installing packages (for consistency).
-    $APT_INSTALL python3.8 python3-pip
+    $APT_INSTALL python3.8 python3-pip python3.8-venv
 
-# It is specified here to install all packages in /usr/lib/python3.8/site-packages path,
-# otherwise pemja will report an error because the package cannot be found.
-RUN pip3 install --target=/usr/lib/python3.8/site-packages $PIP_PKGS
-
-RUN knext config set --global graph_store_url="tugraph://tugraph:9090?graphName=default&timeout=50000&accessId=admin&accessKey=73@TuGraph" && \
-    knext config set --global search_engine_url="elasticsearch://elasticsearch:9200?scheme=http" && \
-    knext config set --global host_addr="http://server:8887"
+RUN python3 -m venv /openspg_venv && \
+    . /openspg_venv/bin/activate && \
+    pip3 install $PIP_PKGS && \
+    echo "if (tty -s); then \n   . /openspg_venv/bin/activate \nfi" >> ~/.bashrc
 
 RUN git clone --depth=1 https://github.com/OpenSPG/openspg.git
