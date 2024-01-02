@@ -17,7 +17,6 @@ from knext.operator.spg_record import SPGRecord
 
 
 class StateFuse(FuseOp):
-
     bind_to = "Financial.State"
 
     def __init__(self):
@@ -42,14 +41,13 @@ class StateFuse(FuseOp):
                     },
                 )
             )
+
         return linked_records
 
     def merge(
-        self, subject_record: SPGRecord, linked_records: List[SPGRecord]
+            self, subject_record: SPGRecord, linked_records: List[SPGRecord]
     ) -> List[SPGRecord]:
-        merged_records = []
-        if not linked_records:
-            merged_records.append(subject_record)
+        merged_records = [subject_record]
         print("StateFuse(Output): ")
         print("----------------------")
         [print(r) for r in merged_records]

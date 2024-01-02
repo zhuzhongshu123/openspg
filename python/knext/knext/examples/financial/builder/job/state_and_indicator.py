@@ -11,7 +11,7 @@
 # or implied.
 
 
-from knext.examples.financial.schema.financial_schema_helper import Financial
+from schema.financial_schema_helper import Financial
 
 from knext.api.component import CSVReader, LLMBasedExtractor, KGWriter, SubGraphMapping
 from knext.client.model.builder_job import BuilderJob
@@ -24,9 +24,9 @@ class StateAndIndicator(BuilderJob):
             local_path="builder/job/data/document.csv", columns=["input"], start_row=2
         )
 
-        from knext.examples.financial.builder.operator.IndicatorNER import IndicatorNER
-        from knext.examples.financial.builder.operator.IndicatorREL import IndicatorREL
-        from knext.examples.financial.builder.operator.IndicatorLOGIC import (
+        from builder.operator.IndicatorNER import IndicatorNER
+        from builder.operator.IndicatorREL import IndicatorREL
+        from builder.operator.IndicatorLOGIC import (
             IndicatorLOGIC,
         )
 
