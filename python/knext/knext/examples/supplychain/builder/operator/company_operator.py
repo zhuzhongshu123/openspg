@@ -43,7 +43,7 @@ class CompanyLinkerOperator(LinkOp):
         self.search_client = SearchClient("SupplyChain.Company")
         self.enable_llm = False
 
-    def eval(self, property: str, record: SPGRecord) -> List[SPGRecord]:
+    def invoke(self, property: str, record: SPGRecord) -> List[SPGRecord]:
         company_name = property
         query = {"match": {"name": company_name}}
         recalls = self.search_client.search(query, start=0, size=30)
