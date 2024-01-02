@@ -29,7 +29,7 @@ class Industry(BuilderJob):
             start_row=2,
         )
 
-        mapping = SPGTypeMapping(spg_type_name=SupplyChain.Industry).add_field(
+        mapping = SPGTypeMapping(spg_type_name=SupplyChain.Industry).add_mapping_field(
             "fullname", SupplyChain.Industry.id
         )
 
