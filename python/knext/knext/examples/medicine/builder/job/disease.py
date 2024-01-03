@@ -10,10 +10,10 @@
 # is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
 # or implied.
 
-from knext.client.model.builder_job import BuilderJob
-from knext.api.component import CSVReader, LLMBasedExtractor, SubGraphMapping, KGWriter
-from knext.api.auto_prompt import REPrompt
 from nn4k.invoker import LLMInvoker
+
+from knext.api.component import CSVReader, LLMBasedExtractor, SubGraphMapping, KGWriter
+from knext.client.model.builder_job import BuilderJob
 
 
 class Disease(BuilderJob):
@@ -28,13 +28,13 @@ class Disease(BuilderJob):
         )
 
         """
-        2. 定义大模型抽取组件，从长文本中抽取Medical.Disease类型实体
+        2. 定义大模型抽取组件，从长文本中抽取Medicine.Disease类型实体
         """
         extract = LLMBasedExtractor(
             llm=LLMInvoker.from_config("builder/model/openai_infer.json"),
             prompt_ops=[
                 REPrompt(
-                    spg_type_name="Medical.Disease",
+                    spg_type_name="Medicine.Disease",
                     property_names=[
                         "complication",
                         "commonSymptom",
@@ -50,7 +50,7 @@ class Disease(BuilderJob):
         2. 定义子图映射组件
         """
         mapping = (
-            SubGraphMapping(spg_type_name="Medical.Disease")
+            SubGraphMapping(spg_type_name="Medicine.Disease")
             .add_mapping_field("id", "id")
             .add_mapping_field("name", "name")
             .add_mapping_field("complication", "complication")
@@ -75,7 +75,7 @@ if __name__ == "__main__":
     from knext.api.auto_prompt import REPrompt
 
     prompt = REPrompt(
-        spg_type_name="Medical.Disease",
+        spg_type_name="Medicine.Disease",
         property_names=[
             "complication",
             "commonSymptom",

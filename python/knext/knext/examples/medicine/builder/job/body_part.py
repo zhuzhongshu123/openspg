@@ -9,20 +9,17 @@
 # Unless required by applicable law or agreed to in writing, software distributed under the License
 # is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
 # or implied.
-
 from knext.client.model.builder_job import BuilderJob
 from knext.component.builder import CSVReader, SPGTypeMapping, KGWriter
 
 
-class HospitalDepartment(BuilderJob):
+class BodyPart(BuilderJob):
     def build(self):
         source = CSVReader(
-            local_path="./builder/job/data/HospitalDepartment.csv",
-            columns=["id"],
-            start_row=1,
+            local_path="./builder/job/data/BodyPart.csv", columns=["id"], start_row=1
         )
 
-        mapping = SPGTypeMapping(spg_type_name="Medical.HospitalDepartment")
+        mapping = SPGTypeMapping(spg_type_name="Medicine.BodyPart").add_field("id", "id")
 
         sink = KGWriter()
 

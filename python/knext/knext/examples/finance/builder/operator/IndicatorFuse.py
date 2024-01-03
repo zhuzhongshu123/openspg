@@ -17,11 +17,11 @@ from knext.operator.spg_record import SPGRecord
 
 
 class IndicatorFuse(FuseOp):
-    bind_to = "Financial.Indicator"
+    bind_to = "Finance.Indicator"
 
     def __init__(self):
         super().__init__()
-        self.search_client = SearchClient("Financial.Indicator")
+        self.search_client = SearchClient("Finance.Indicator")
 
     def link(self, subject_record: SPGRecord) -> List[SPGRecord]:
         print("####################IndicatorFuse(指标融合)#####################")
@@ -37,7 +37,7 @@ class IndicatorFuse(FuseOp):
             ):
                 linked_records.append(
                     SPGRecord(
-                        "Financial.Indicator",
+                        "Finance.Indicator",
                         {
                             "id": recall_records[0].doc_id,
                             "name": recall_records[0].properties.get("name", ""),

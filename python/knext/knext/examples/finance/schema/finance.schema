@@ -1,4 +1,4 @@
-namespace Financial
+namespace Finance
 
 STD.USCCode(统一社会信用代码): StandardType
   desc: 统一社会信用代码由五个部分组成，分别是注册登记管理部门代码（1-2位）、机构类别代码（3位）、登记管理机关行政区划码（4-6位）、组织机构代码（9位）和校验码（最后一位）

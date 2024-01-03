@@ -18,7 +18,7 @@
 from knext.common.schema_helper import SPGTypeHelper, PropertyHelper
 
 
-class Medical:
+class Medicine:
     class BodyPart(SPGTypeHelper):
         description = PropertyHelper("description")
         id = PropertyHelper("id")
@@ -58,9 +58,9 @@ class Medical:
         id = PropertyHelper("id")
         name = PropertyHelper("name")
 
-    BodyPart = BodyPart("Medical.BodyPart")
-    Disease = Disease("Medical.Disease")
-    Drug = Drug("Medical.Drug")
-    HospitalDepartment = HospitalDepartment("Medical.HospitalDepartment")
-    Indicator = Indicator("Medical.Indicator")
-    Symptom = Symptom("Medical.Symptom")
+    BodyPart = BodyPart("Medicine.BodyPart")
+    Disease = Disease("Medicine.Disease")
+    Drug = Drug("Medicine.Drug")
+    HospitalDepartment = HospitalDepartment("Medicine.HospitalDepartment")
+    Indicator = Indicator("Medicine.Indicator")
+    Symptom = Symptom("Medicine.Symptom")

@@ -31,8 +31,8 @@ class Product(BuilderJob):
 
         mapping = (
             SPGTypeMapping(spg_type_name=SupplyChain.Product)
-            .add_field("fullname", SupplyChain.Product.id)
-            .add_field("belongToIndustry", SupplyChain.Product.belongToIndustry)
+            .add_mapping_field("fullname", SupplyChain.Product.id)
+            .add_mapping_field("belongToIndustry", SupplyChain.Product.belongToIndustry)
         )
 
         sink = KGWriter()
@@ -52,8 +52,8 @@ class ProductHasSupplyChain(BuilderJob):
 
         mapping = (
             SPGTypeMapping(spg_type_name="SupplyChain.Product")
-            .add_field("fullname", "id")
-            .add_field("hasSupplyChain", "hasSupplyChain")
+            .add_mapping_field("fullname", "id")
+            .add_mapping_field("hasSupplyChain", "hasSupplyChain")
         )
 
         sink = KGWriter()

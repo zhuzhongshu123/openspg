@@ -29,4 +29,4 @@ class DiseaseExtractor(ExtractOp):
     def eval(self, record: Dict[str, str]) -> List[SPGRecord]:
         print(record)
         print(self.params)
-        return [SPGRecord("Medical.Disease", {"id": "123", "name": "123"})]
+        return [SPGRecord("Medicine.Disease", {"id": "123", "name": "123"})]

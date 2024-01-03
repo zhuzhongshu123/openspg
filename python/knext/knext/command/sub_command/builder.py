@@ -46,7 +46,12 @@ def execute_job(job_names):
     for job in job_list:
         builder_job = BuilderJob.by_name(job)()
         builder_chain = builder_job.build()
-        builder_chain.invoke(builder_chain)
+        params = {
+            param: getattr(builder_job, param)
+            for param in builder_job.__annotations__
+            if hasattr(builder_job, param) and not param.startswith("_")
+        }
+        builder_chain.invoke(builder_chain, **params)
 
 
 @click.option("--id", help="Unique id of submitted builder job.")

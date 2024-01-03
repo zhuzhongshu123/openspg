@@ -32,9 +32,9 @@ class Company(BuilderJob):
 
         mapping = (
             SPGTypeMapping(spg_type_name=SupplyChain.Company)
-            .add_field("id", SupplyChain.Company.id)
-            .add_field("name", SupplyChain.Company.name)
-            .add_field("products", SupplyChain.Company.product)
+            .add_mapping_field("id", SupplyChain.Company.id)
+            .add_mapping_field("name", SupplyChain.Company.name)
+            .add_mapping_field("products", SupplyChain.Company.product)
         )
 
         sink = KGWriter()
@@ -54,9 +54,9 @@ class CompanyUpdate(BuilderJob):
 
         mapping = (
             SPGTypeMapping(spg_type_name=SupplyChain.Company)
-            .add_field("id", SupplyChain.Company.id)
-            .add_field("name", SupplyChain.Company.name)
-            .add_field("products", SupplyChain.Company.product)
+            .add_mapping_field("id", SupplyChain.Company.id)
+            .add_mapping_field("name", SupplyChain.Company.name)
+            .add_mapping_field("products", SupplyChain.Company.product)
         )
 
         sink = KGWriter()
@@ -78,10 +78,10 @@ class CompanyFundTrans(BuilderJob):
                 predicate_name="fundTrans",
                 object_name=SupplyChain.Company,
             )
-            .add_field("src", "srcId")
-            .add_field("dst", "dstId")
-            .add_field("transDate", "transDate")
-            .add_field("transAmt", "transAmt")
+            .add_mapping_field("src", "srcId")
+            .add_mapping_field("dst", "dstId")
+            .add_mapping_field("transDate", "transDate")
+            .add_mapping_field("transAmt", "transAmt")
         )
 
         sink = KGWriter()

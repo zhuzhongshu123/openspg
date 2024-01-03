@@ -16,7 +16,7 @@ from knext.operator.op import PromptOp
 from knext.operator.spg_record import SPGRecord
 
 
-class IndicatorLOGIC(PromptOp):
+class IndicatorLogic(PromptOp):
     template = """
 请根据给定文本和文本中的指标及其指标关系，梳理逻辑链，以json格式输出
 #####
@@ -54,5 +54,5 @@ ${rel}
                     properties["name"] = v
                 elif k == "object":
                     properties["causes"] = ",".join(v)
-            logic_result.append(SPGRecord("Financial.State", properties=properties))
+            logic_result.append(SPGRecord("Finance.State", properties=properties))
         return logic_result
