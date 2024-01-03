@@ -43,7 +43,7 @@ ${input}
                 for indicator in indicator_list:
                     ner_result.append(
                         SPGRecord(
-                            "Financial.Indicator",
+                            "Finance.Indicator",
                             properties={"id": indicator, "name": indicator},
                         )
                     )

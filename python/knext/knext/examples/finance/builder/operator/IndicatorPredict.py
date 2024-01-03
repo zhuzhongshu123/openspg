@@ -18,11 +18,11 @@ from knext.operator.spg_record import SPGRecord
 
 class IndicatorPredict(PredictOp):
 
-    bind_to = ("Financial.State", "derivedFrom", "Financial.Indicator")
+    bind_to = ("Finance.State", "derivedFrom", "Finance.Indicator")
 
     def __init__(self):
         super().__init__()
-        self.search_client = SearchClient("Financial.Indicator")
+        self.search_client = SearchClient("Finance.Indicator")
 
     def invoke(self, subject_record: SPGRecord) -> List[SPGRecord]:
         print("####################IndicatorPredict(状态关联指标预测)#####################")
@@ -34,7 +34,7 @@ class IndicatorPredict(PredictOp):
         recall_records = self.search_client.search(query, start=0, size=10)
         if recall_records is not None and len(recall_records) > 0:
             rerank_record = SPGRecord(
-                "Financial.Indicator",
+                "Finance.Indicator",
                 {
                     "id": recall_records[0].doc_id,
                     "name": recall_records[0].properties.get("name", ""),

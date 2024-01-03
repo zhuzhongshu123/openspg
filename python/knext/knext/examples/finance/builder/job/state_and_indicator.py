@@ -11,7 +11,7 @@
 # or implied.
 
 
-from schema.financial_schema_helper import Financial
+from schema.finance_schema_helper import Finance
 
 from knext.api.component import CSVReader, LLMBasedExtractor, KGWriter, SubGraphMapping
 from knext.client.model.builder_job import BuilderJob
@@ -36,17 +36,17 @@ class StateAndIndicator(BuilderJob):
         )
 
         state_mapping = (
-            SubGraphMapping(spg_type_name=Financial.State)
-            .add_mapping_field("id", Financial.State.id)
-            .add_mapping_field("name", Financial.State.name)
-            .add_mapping_field("causes", Financial.State.causes)
-            .add_predicting_field(Financial.State.derivedFrom)
+            SubGraphMapping(spg_type_name=Finance.State)
+            .add_mapping_field("id", Finance.State.id)
+            .add_mapping_field("name", Finance.State.name)
+            .add_mapping_field("causes", Finance.State.causes)
+            .add_predicting_field(Finance.State.derivedFrom)
         )
 
         indicator_mapping = (
-            SubGraphMapping(spg_type_name=Financial.Indicator)
-            .add_mapping_field("id", Financial.Indicator.id)
-            .add_mapping_field("name", Financial.Indicator.name)
+            SubGraphMapping(spg_type_name=Finance.Indicator)
+            .add_mapping_field("id", Finance.Indicator.id)
+            .add_mapping_field("name", Finance.Indicator.name)
         )
 
         sink = KGWriter()
@@ -58,14 +58,14 @@ if __name__ == "__main__":
     from knext.api.auto_prompt import REPrompt
 
     prompt = REPrompt(
-        spg_type_name=Financial.Company,
+        spg_type_name=Finance.Company,
         property_names=[
-            Financial.Company.orgCertNo,
-            Financial.Company.regArea,
-            Financial.Company.businessScope,
-            Financial.Company.establishDate,
-            Financial.Company.legalPerson,
-            Financial.Company.regCapital,
+            Finance.Company.orgCertNo,
+            Finance.Company.regArea,
+            Finance.Company.businessScope,
+            Finance.Company.establishDate,
+            Finance.Company.legalPerson,
+            Finance.Company.regCapital,
         ],
     )
     print(prompt.template)

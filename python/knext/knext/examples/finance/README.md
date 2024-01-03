@@ -1,5 +1,5 @@
 ```bash
-knext project create --name 全风 --namespace Financial --desc 全风财政指标抽取
+knext project create --name 全风 --namespace Finance --desc 全风财政指标抽取
 ```
 
 ```bash

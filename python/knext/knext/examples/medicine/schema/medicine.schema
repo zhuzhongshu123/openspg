@@ -1,4 +1,4 @@
-namespace Medical
+namespace Medicine
 
 Symptom(症状): EntityType
 

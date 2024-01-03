@@ -18,7 +18,7 @@
 from knext.common.schema_helper import SPGTypeHelper, PropertyHelper
 
 
-class Financial:
+class Finance:
     class AdministrativeArea(SPGTypeHelper):
         description = PropertyHelper("description")
         id = PropertyHelper("id")
@@ -71,9 +71,9 @@ class Financial:
         stdId = PropertyHelper("stdId")
         alias = PropertyHelper("alias")
 
-    AdministrativeArea = AdministrativeArea("Financial.AdministrativeArea")
-    AreaRiskEvent = AreaRiskEvent("Financial.AreaRiskEvent")
-    Company = Company("Financial.Company")
-    CompanyEvent = CompanyEvent("Financial.CompanyEvent")
-    Indicator = Indicator("Financial.Indicator")
-    State = State("Financial.State")
+    AdministrativeArea = AdministrativeArea("Finance.AdministrativeArea")
+    AreaRiskEvent = AreaRiskEvent("Finance.AreaRiskEvent")
+    Company = Company("Finance.Company")
+    CompanyEvent = CompanyEvent("Finance.CompanyEvent")
+    Indicator = Indicator("Finance.Indicator")
+    State = State("Finance.State")

@@ -11,7 +11,7 @@
 # or implied.
 
 
-from schema.financial_schema_helper import Financial
+from schema.finance_schema_helper import Finance
 
 from knext.api.component import CSVReader, LLMBasedExtractor, KGWriter, SubGraphMapping
 from knext.client.model.builder_job import BuilderJob
@@ -27,15 +27,15 @@ class Company(BuilderJob):
         from knext.api.auto_prompt import REPrompt
 
         prompt = REPrompt(
-            spg_type_name=Financial.Company,
+            spg_type_name=Finance.Company,
             property_names=[
-                Financial.Company.name,
-                Financial.Company.orgCertNo,
-                Financial.Company.regArea,
-                Financial.Company.businessScope,
-                Financial.Company.establishDate,
-                Financial.Company.legalPerson,
-                Financial.Company.regCapital,
+                Finance.Company.name,
+                Finance.Company.orgCertNo,
+                Finance.Company.regArea,
+                Finance.Company.businessScope,
+                Finance.Company.establishDate,
+                Finance.Company.legalPerson,
+                Finance.Company.regCapital,
             ],
         )
 
@@ -45,14 +45,14 @@ class Company(BuilderJob):
         )
 
         mapping = (
-            SubGraphMapping(spg_type_name=Financial.Company)
-            .add_mapping_field("name", Financial.Company.id)
-            .add_mapping_field("name", Financial.Company.name)
-            .add_mapping_field("regArea", Financial.Company.regArea)
-            .add_mapping_field("businessScope", Financial.Company.businessScope)
-            .add_mapping_field("establishDate", Financial.Company.establishDate)
-            .add_mapping_field("legalPerson", Financial.Company.legalPerson)
-            .add_mapping_field("regCapital", Financial.Company.regCapital)
+            SubGraphMapping(spg_type_name=Finance.Company)
+            .add_mapping_field("name", Finance.Company.id)
+            .add_mapping_field("name", Finance.Company.name)
+            .add_mapping_field("regArea", Finance.Company.regArea)
+            .add_mapping_field("businessScope", Finance.Company.businessScope)
+            .add_mapping_field("establishDate", Finance.Company.establishDate)
+            .add_mapping_field("legalPerson", Finance.Company.legalPerson)
+            .add_mapping_field("regCapital", Finance.Company.regCapital)
         )
 
         sink = KGWriter()
@@ -64,14 +64,14 @@ if __name__ == "__main__":
     from knext.api.auto_prompt import REPrompt
 
     prompt = REPrompt(
-        spg_type_name=Financial.Company,
+        spg_type_name=Finance.Company,
         property_names=[
-            Financial.Company.orgCertNo,
-            Financial.Company.regArea,
-            Financial.Company.businessScope,
-            Financial.Company.establishDate,
-            Financial.Company.legalPerson,
-            Financial.Company.regCapital,
+            Finance.Company.orgCertNo,
+            Finance.Company.regArea,
+            Finance.Company.businessScope,
+            Finance.Company.establishDate,
+            Finance.Company.legalPerson,
+            Finance.Company.regCapital,
         ],
     )
     print(prompt.template)
