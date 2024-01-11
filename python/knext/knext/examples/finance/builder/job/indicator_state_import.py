@@ -14,20 +14,25 @@ from knext.component.builder import CSVReader, SPGTypeMapping, KGWriter
 from schema.finance_schema_helper import Finance
 
 
-class Indicator(BuilderJob):
+class IndicatorState(BuilderJob):
     def build(self):
         source = CSVReader(
-            local_path="./builder/job/data/indicator_edges.csv",
+            local_path="./builder/job/data/indicator_state_edges.csv",
             columns=["id1", "id2"],
             start_row=2,
         )
 
-        mapping = (
+        indicator_mapping = (
             SPGTypeMapping(spg_type_name=Finance.Indicator)
-            .add_property_mapping("id", Finance.Indicator.id)
-            .add_relation_mapping("id", "id2", Finance.Indicator.id)
+            .add_property_mapping("id2", Finance.Indicator.id)
         )
-
+        
+        state_mapping = (
+            SPGTypeMapping(spg_type_name=Finance.State)
+            .add_property_mapping("id", Finance.State.id)
+            .add_relation_mapping("id2", Finance.State.derivedFrom, Finance.Indicator)            
+        )
+        
         sink = KGWriter()
 
-        return source >> mapping >> sink
+        return source >> [indicator_mapping, state_mapping] >> sink

@@ -3,6 +3,19 @@ namespace Finance
 Indicator(指标概念): ConceptType
     hypernymPredicate: isA
 
+Trend(趋势): ConceptType
+    hypernymPredicate: isA
+
+State(状态): ConceptType
+    desc: 指标状态
+    relations:
+        CAU#causes(导致): State
+            desc: 状态顺承关系
+        INC#derivedFrom(指标): Indicator
+            desc: 状态的指标
+        INC#derivedFrom(趋势): Trend
+            desc: 状态的趋势
+
 IndicatorEvent(经济指标事件): EventType
     desc: 指的是特定地区经济状况和发展水平的数据指标的相关事件
     properties:

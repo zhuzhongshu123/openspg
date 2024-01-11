@@ -34,7 +34,7 @@ class IndicatorLinkOp(LinkOp):
         # Retrieve relevant indicators from KG based on indicator name
         name = property
         recall_records = self.search_client.fuzzy_search_by_property(
-            property, "name", size=3
+            property, "name", size=1
         )
         if len(recall_records) == 0:
             print("no indicators recalled")

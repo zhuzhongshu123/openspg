@@ -24,7 +24,7 @@ from knext.api.auto_prompt import EEPrompt
 from knext.client.model.builder_job import BuilderJob
 
 
-class IndicatorEvent(BuilderJob):
+class EventExtract(BuilderJob):
     def build(self):
         source = CSVReader(
             local_path="builder/job/data/document.csv", columns=["input"], start_row=2

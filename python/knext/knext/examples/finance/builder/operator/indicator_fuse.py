@@ -28,20 +28,6 @@ class IndicatorFuseOp(FuseOp):
         self.prompt_op = IndicatorFusePrompt()
         self.search_client = SearchClient(Finance.Indicator)
 
-    def generate(self, input_data):
-        req = {
-            "input": input_data,
-            "max_input_len": 1024,
-            "max_output_len": 1024,
-        }
-        url = "http://localhost:9999/generate"
-        try:
-            rsp = requests.post(url, req)
-            rsp.raise_for_status()
-            return rsp.json()
-        except Exception as e:
-            return {"output": ""}
-
     def link(self, subject_record: SPGRecord) -> SPGRecord:
         # Retrieve relevant indicators from KG based on indicator name
         recall_records = self.search_client.fuzzy_search(subject_record, "name", size=1)
@@ -50,23 +36,7 @@ class IndicatorFuseOp(FuseOp):
         return recall_records[0]
 
     def merge(self, subject_record: SPGRecord, linked_record: SPGRecord) -> SPGRecord:
-        # Merge the recalled indicators with LLM
-        data = {
-            "name": subject_record.get_property("name"),
-            "candidates": [linked_record.properties["name"]],
-        }
-        merge_input = self.prompt_op.build_prompt(data)
-        merge_result = self.generate(merge_input)
-        merge_result = self.prompt_op.parse_response(merge_result)
-        # If the KG already contains `subject_record`, return the existing record
-        # (you can also update the properties of existing record as well),
-        # otherwise return `subject_record`
-
-        if merge_result is not None:
-            tmp = merge_result[0]
-            is_a_relation = subject_record.get_relation("isA", Finance.Indicator)
-            if is_a_relation is not None:
-                tmp.upsert_relation("isA", Finance.Indicator, is_a_relation)
-            return tmp
-        else:
+        if linked_record is None:
             return subject_record
+        else:
+            return linked_record
