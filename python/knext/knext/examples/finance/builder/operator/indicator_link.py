@@ -25,22 +25,18 @@ class IndicatorLinkOp(LinkOp):
 
     def __init__(self):
         super().__init__()
-        from builder.operator.prompts import IndicatorLinkPrompt
+        # from builder.operator.prompts import IndicatorLinkPrompt
 
-        self.prompt_op = IndicatorLinkPrompt()
+        # self.prompt_op = IndicatorLinkPrompt()
         self.search_client = SearchClient(self.bind_to)
 
     def invoke(self, property: str, subject_record: SPGRecord) -> List[SPGRecord]:
         # Retrieve relevant indicators from KG based on indicator name
-        name = property
+        print(f"property = {property}")
         recall_records = self.search_client.fuzzy_search_by_property(
             property, "name", size=1
         )
         if len(recall_records) == 0:
-            print("no indicators recalled")
-            tmp = SPGRecord("Finance.Indicator")
-            tmp.upsert_property("id", property)
-            tmp.upsert_property("name", name)
-            return [tmp]
+            return []
         print(f"recalled indicators: {recall_records}")
         return recall_records

@@ -18,14 +18,15 @@ class Indicator(BuilderJob):
     def build(self):
         source = CSVReader(
             local_path="./builder/job/data/indicator_edges.csv",
-            columns=["id1", "id2"],
+            columns=["id1", "rel", "id2"],
             start_row=2,
         )
 
         mapping = (
             SPGTypeMapping(spg_type_name=Finance.Indicator)
-            .add_property_mapping("id", Finance.Indicator.id)
-            .add_relation_mapping("id", "id2", Finance.Indicator.id)
+            .add_property_mapping("id1", Finance.Indicator.id)
+            .add_property_mapping("id1", Finance.Indicator.name)
+            .add_relation_mapping("id2", "isA", Finance.Indicator)
         )
 
         sink = KGWriter()

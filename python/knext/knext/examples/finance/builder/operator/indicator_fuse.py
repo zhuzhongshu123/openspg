@@ -23,9 +23,9 @@ class IndicatorFuseOp(FuseOp):
 
     def __init__(self):
         super().__init__()
-        from builder.operator.prompts import IndicatorFusePrompt
+        # from builder.operator.prompts import IndicatorFusePrompt
 
-        self.prompt_op = IndicatorFusePrompt()
+        # self.prompt_op = IndicatorFusePrompt()
         self.search_client = SearchClient(Finance.Indicator)
 
     def link(self, subject_record: SPGRecord) -> SPGRecord:
