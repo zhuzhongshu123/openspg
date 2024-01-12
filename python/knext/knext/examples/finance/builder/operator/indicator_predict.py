@@ -37,7 +37,7 @@ class IndicatorPredictOp(PredictOp):
             "max_input_len": 1024,
             "max_output_len": 1024,
         }
-        url = "http://localhost:9999/generate"
+        url = "http://11.166.207.228:8888/generate"
         try:
             rsp = requests.post(url, req)
             rsp.raise_for_status()
@@ -66,14 +66,16 @@ class IndicatorPredictOp(PredictOp):
     def invoke(self, subject_record: SPGRecord) -> List[SPGRecord]:
         # Predict the hypernym indicators with LLM based on the indicator name. For example:
         # 一般公共预算收入-税收收入-增值税-土地增值税
+        print("Enter IndicatorPredictOp===========================")
         name = subject_record.get_property("name")
         data = {"input": name}
         predict_input = self.prompt_op.build_prompt(data)
         predict_result = self.generate(predict_input)
+        print(f"model_output = {predict_result}")
         if predict_result is None:
             return []
         predict_result = self.prompt_op.parse_response(predict_result)
-        print(f"predict_result = {predict_result}")
+        print(f"parsed_record = {predict_result}")
         output = []
         if len(predict_result) == 0:
             return output
@@ -81,8 +83,13 @@ class IndicatorPredictOp(PredictOp):
             recalled_record = self._recall(item)
             print(item, recalled_record)
             if recalled_record is not None:
-                recalled_record.upsert_relation(
-                    "isA", Finance.Indicator, subject_record.get_property("id")
-                )
                 output.append(recalled_record)
+        print("Exit IndicatorPredictOp===========================")
         return output
+
+
+if __name__ == "__main__":
+    op = IndicatorPredictOp()
+    subject_record = SPGRecord("Finance.Indicator")
+    subject_record.upsert_property("name", "土地出让金")
+    subject_record.upsert_property("id", "土地出让金")

@@ -27,9 +27,9 @@ class IndicatorFuseOp(FuseOp):
 
     def link(self, subject_record: SPGRecord) -> SPGRecord:
         # Retrieve relevant indicators from KG based on indicator name
-        print("Enter IndicatorFuseOp.link===========================")        
+        print("Enter IndicatorFuseOp.link===========================")
         recall_records = self.search_client.fuzzy_search(subject_record, "name", size=1)
-        
+
         print(f"subject: {subject_record}, linked: {recall_records}")
         print("Exit IndicatorFuseOp.link===========================")
         if len(recall_records) == 0:
@@ -37,6 +37,10 @@ class IndicatorFuseOp(FuseOp):
         return recall_records[0]
 
     def merge(self, subject_record: SPGRecord, linked_record: SPGRecord) -> SPGRecord:
+        print("Enter IndicatorFuseOp.merge===========================")
+        print(f"subject_record = {subject_record}")
+        print(f"linked_record = {linked_record}")
+        print("Exit IndicatorFuseOp.merge===========================")
         if linked_record is None:
             return subject_record
         else:
