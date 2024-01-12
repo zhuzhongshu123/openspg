@@ -23,16 +23,17 @@ class IndicatorFuseOp(FuseOp):
 
     def __init__(self):
         super().__init__()
-        # from builder.operator.prompts import IndicatorFusePrompt
-
-        # self.prompt_op = IndicatorFusePrompt()
         self.search_client = SearchClient(Finance.Indicator)
 
     def link(self, subject_record: SPGRecord) -> SPGRecord:
         # Retrieve relevant indicators from KG based on indicator name
+        print("Enter IndicatorFuseOp.link===========================")        
         recall_records = self.search_client.fuzzy_search(subject_record, "name", size=1)
+        
+        print(f"subject: {subject_record}, linked: {recall_records}")
+        print("Exit IndicatorFuseOp.link===========================")
         if len(recall_records) == 0:
-            return subject_record
+            return None
         return recall_records[0]
 
     def merge(self, subject_record: SPGRecord, linked_record: SPGRecord) -> SPGRecord:

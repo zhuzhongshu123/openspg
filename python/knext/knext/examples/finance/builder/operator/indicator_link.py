@@ -32,11 +32,11 @@ class IndicatorLinkOp(LinkOp):
 
     def invoke(self, property: str, subject_record: SPGRecord) -> List[SPGRecord]:
         # Retrieve relevant indicators from KG based on indicator name
-        print(f"property = {property}")
+        print("Enter IndicatorLinkOp===========================")
         recall_records = self.search_client.fuzzy_search_by_property(
             property, "name", size=1
         )
         if len(recall_records) == 0:
             return []
-        print(f"recalled indicators: {recall_records}")
+        print("Exit IndicatorLinkOp===========================")
         return recall_records

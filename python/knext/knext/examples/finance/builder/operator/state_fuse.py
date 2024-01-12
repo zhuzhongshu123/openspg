@@ -39,31 +39,16 @@ class StateFuse(FuseOp):
     def generate(self, input_data):
         return self.invoker.remote_inference(input_data)[0]
 
-    # def _link(self, subject_record: SPGRecord) -> List[SPGRecord]:
-    #     state_name = subject_record.get_property("name")
-    #     recall_indicators = self.indicator_search_client.fuzzy_search_by_property(
-    #         state_name, "name"
-    #     )
-    #     if len(recall_indicators) == 0:
-    #         return []
-    #     all_recall_states = []
-    #     for item in recall_indicators:
-    #         name = item.get_property("name", None)
-    #         if name is not None:
-    #             recall_states = self.state_search_client.fuzzy_search_by_property(
-    #                 name, "name"
-    #             )
-    #             all_recall_states += recall_states
-    #     return all_recall_states
-
     def invoke(self, subject_records: List[SPGRecord]) -> List[SPGRecord]:
-        print("##########StateFuse###########")
+        print("Enter StateFuseOp===========================")
+        print(f"subject_records = {subject_records}")
         fused_records = []
         for record in subject_records:
             recalled_states = self.state_search_client.fuzzy_search(
                 record, "name", size=10
             )
             if len(recalled_states) == 0:
+                print("no state recalled...")
                 fused_records.append(subject_records)
             else:
                 input_state = record.get_property("name")
@@ -75,8 +60,9 @@ class StateFuse(FuseOp):
                     f'input_state："{input_state}"，candidate_states：{candidate_states}'
                 )
                 prompt_input = {"input": content}
+                print(f"req = {prompt_input}")
                 rsp = self.generate(self.prompt.build_prompt(prompt_input))
-
+                print(f"rsp = {rsp}")
                 output = self.prompt.parse_response(rsp)
                 if len(output) > 0:
                     output_state = candidate_state_map.get(output[0], None)
@@ -85,6 +71,8 @@ class StateFuse(FuseOp):
                     else:
                         # same state found sucessfully
                         fused_records.append(output_state)
+        print(f"fused_records = {fused_records}")
+        print("Exit StateFuseOp===========================")
         if len(fused_records) == 0:
             return subject_records
         return fused_records

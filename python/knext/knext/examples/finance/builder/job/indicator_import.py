@@ -11,6 +11,7 @@
 # or implied.
 from knext.client.model.builder_job import BuilderJob
 from knext.component.builder import CSVReader, SPGTypeMapping, KGWriter
+from knext.component.builder.mapping import LinkingStrategyEnum
 from schema.finance_schema_helper import Finance
 
 
@@ -22,13 +23,21 @@ class Indicator(BuilderJob):
             start_row=2,
         )
 
-        mapping = (
+        mapping1 = (
+            SPGTypeMapping(spg_type_name=Finance.Indicator)
+            .add_property_mapping("id2", Finance.Indicator.id)
+            .add_property_mapping("id2", Finance.Indicator.name)
+        )
+
+        mapping2 = (
             SPGTypeMapping(spg_type_name=Finance.Indicator)
             .add_property_mapping("id1", Finance.Indicator.id)
             .add_property_mapping("id1", Finance.Indicator.name)
-            .add_relation_mapping("id2", "isA", Finance.Indicator)
+            .add_relation_mapping(
+                "id2", "isA", Finance.Indicator, LinkingStrategyEnum.IDEquals
+            )
         )
 
         sink = KGWriter()
 
-        return source >> mapping >> sink
+        return source >> [mapping1, mapping2] >> sink

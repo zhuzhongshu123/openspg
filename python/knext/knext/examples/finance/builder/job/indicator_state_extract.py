@@ -22,8 +22,7 @@ from knext.api.component import (
 from knext.client.model.builder_job import BuilderJob
 from nn4k.invoker import NNInvoker
 
-from builder.operator.indicator_extract import IndicatorExtractOp
-from builder.operator.event_extract import IndicatorStateExtractOp
+from builder.operator.indicator_state_extract_op import IndicatorStateExtractOp
 
 
 class IndicatorStateExtract(BuilderJob):
