@@ -10,6 +10,7 @@
 # Unless required by applicable law or agreed to in writing, software distributed under the License
 # is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
 # or implied.
+import json
 import requests
 from typing import List
 from knext.api.operator import PredictOp
@@ -40,9 +41,10 @@ class IndicatorPredictOp(PredictOp):
         try:
             rsp = requests.post(url, req)
             rsp.raise_for_status()
-            return rsp.json()
+            output = json.dumps(rsp.json()["output"][0])
+            return output
         except Exception as e:
-            return {"output": ""}
+            print(f"faied to generate, info: {e}")
 
     def _recall(self, indicator):
         recall_records = self.search_client.fuzzy_search(indicator, "name", size=1)
@@ -65,9 +67,11 @@ class IndicatorPredictOp(PredictOp):
         # Predict the hypernym indicators with LLM based on the indicator name. For example:
         # 一般公共预算收入-税收收入-增值税-土地增值税
         name = subject_record.get_property("name")
-        data = {"name": name}
+        data = {"input": name}
         predict_input = self.prompt_op.build_prompt(data)
         predict_result = self.generate(predict_input)
+        if predict_result is None:
+            return []
         predict_result = self.prompt_op.parse_response(predict_result)
         print(f"predict_result = {predict_result}")
         output = []

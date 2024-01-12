@@ -56,7 +56,6 @@ class IndicatorNERPrompt(PromptOp):
         return output
 
 
-
 class IndicatorLogicPrompt(PromptOp):
     template = {
         "input": "",
@@ -75,7 +74,7 @@ class IndicatorLogicPrompt(PromptOp):
         tmp = copy.deepcopy(self.template)
         tmp["input"] = variables["input"]
         return json.dumps(tmp)
-    
+
     def parse_response(self, response: str) -> List[SPGRecord]:
         try:
             records = json.loads(response)
@@ -101,25 +100,26 @@ class IndicatorLogicPrompt(PromptOp):
             state.upsert_property("derivedFrom", indicator_name)
             output.append(state)
         return output
-    
+
 
 class IndicatorPredictPrompt(PromptOp):
-    template = """
-请在你所知的指标关系中，寻找指标{input}的最多5个上位指标名称，如果有，则返回相同指标名称，
-没有则返回空。
-#####
-输出格式:
-{{"hypernym": ["XXX"]}}
-"""
-
     def build_prompt(self, variables: Dict[str, str]):
-        return self.template.format(
-            input=variables.get("input", ""),
-        )
+        return variables["input"]
 
     def parse_response(self, response: str) -> List[SPGRecord]:
-        return get_mock_spg_records(5)
-
+        response = json.loads(response)
+        output = []
+        dedup = set()
+        for k, v in response.items():
+            for ud in v:
+                u, d = ud
+                if u in dedup or len(u) == 0:
+                    continue
+                dedup.add(u)
+                tmp = SPGRecord("Finance.Indicator")
+                tmp.upsert_property("name", u)
+                output.append(tmp)
+        return output
 
 
 class StateFusePrompt(PromptOp):
@@ -140,7 +140,7 @@ class StateFusePrompt(PromptOp):
         tmp = copy.deepcopy(self.template)
         tmp["input"] = variables["input"]
         return json.dumps(tmp)
-    
+
     def parse_response(self, response: str) -> List[SPGRecord]:
         try:
             record = json.loads(response)
@@ -150,9 +150,8 @@ class StateFusePrompt(PromptOp):
 
         output = []
         same_state = record.get("same_state", "")
-        if len(same_state)>0:
+        if len(same_state) > 0:
             tmp = SPGRecord("Finance.State")
             tmp.upsert_property("name", same_state)
             output.append(tmp)
         return output
-    
