@@ -33,6 +33,7 @@ class IndicatorExtractOp(ExtractOp):
         except Exception as e:
             print(f"failed to call generate, info: {e}")
             return {}
+
     def invoke(self, record: Dict[str, str]) -> List[SPGRecord]:
         # Building LLM inputs with IndicatorNERPrompt
         ner_input = self.prompt_op.build_prompt(record)

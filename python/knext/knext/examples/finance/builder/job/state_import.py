@@ -27,7 +27,7 @@ class State(BuilderJob):
             .add_property_mapping("id", Finance.State.id)
             .add_relation_mapping("id", "id2", Finance.State.id)
         )
-        
+
         sink = KGWriter()
 
         return source >> mapping >> sink

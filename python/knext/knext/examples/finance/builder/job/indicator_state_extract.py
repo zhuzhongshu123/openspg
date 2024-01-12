@@ -47,9 +47,11 @@ class IndicatorStateExtract(BuilderJob):
         state_mapping = (
             SPGTypeMapping(spg_type_name=Finance.State)
             .add_property_mapping("id2", Finance.State.id)
-            .add_relation_mapping("derivedFrom", Finance.State.derivedFrom, Finance.Indicator)
+            .add_relation_mapping(
+                "derivedFrom", Finance.State.derivedFrom, Finance.Indicator
+            )
         )
-        
+
         sink = KGWriter()
 
         return source >> extract >> [indicator_mapping, state_mapping] >> sink

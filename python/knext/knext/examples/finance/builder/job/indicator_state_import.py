@@ -22,17 +22,16 @@ class IndicatorState(BuilderJob):
             start_row=2,
         )
 
-        indicator_mapping = (
-            SPGTypeMapping(spg_type_name=Finance.Indicator)
-            .add_property_mapping("id2", Finance.Indicator.id)
-        )
-        
+        indicator_mapping = SPGTypeMapping(
+            spg_type_name=Finance.Indicator
+        ).add_property_mapping("id2", Finance.Indicator.id)
+
         state_mapping = (
             SPGTypeMapping(spg_type_name=Finance.State)
             .add_property_mapping("id", Finance.State.id)
-            .add_relation_mapping("id2", Finance.State.derivedFrom, Finance.Indicator)            
+            .add_relation_mapping("id2", Finance.State.derivedFrom, Finance.Indicator)
         )
-        
+
         sink = KGWriter()
 
         return source >> [indicator_mapping, state_mapping] >> sink
