@@ -14,6 +14,7 @@ import requests
 from typing import List, Dict
 from knext.api.operator import ExtractOp
 from knext.api.record import SPGRecord
+from nn4k.invoker import NNInvoker
 
 
 class IndicatorExtractOp(ExtractOp):
@@ -27,19 +28,11 @@ class IndicatorExtractOp(ExtractOp):
 
     def generate(self, input_data, adapter_name):
         # Request LLM service to get the extraction results
-        req = {
-            "input": input_data,
-            "adapter_name": adapter_name,
-            "max_input_len": 1024,
-            "max_output_len": 1024,
-        }
         try:
-            rsp = requests.post(self.url, req)
-            rsp.raise_for_status()
-            return rsp.json()
+            return self.invoker.remote_inference(input_data)[0]
         except Exception as e:
-            return {"output": ""}
-
+            print(f"failed to call generate, info: {e}")
+            return {}
     def invoke(self, record: Dict[str, str]) -> List[SPGRecord]:
         # Building LLM inputs with IndicatorNERPrompt
         ner_input = self.prompt_op.build_prompt(record)
