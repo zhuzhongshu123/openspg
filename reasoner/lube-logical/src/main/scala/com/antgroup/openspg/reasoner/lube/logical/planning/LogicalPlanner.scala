@@ -22,11 +22,9 @@ import com.antgroup.openspg.reasoner.common.exception.{
   UnsupportedOperationException
 }
 import com.antgroup.openspg.reasoner.common.graph.edge.SPO
-import com.antgroup.openspg.reasoner.common.types.KTString
 import com.antgroup.openspg.reasoner.lube.block._
 import com.antgroup.openspg.reasoner.lube.catalog.{Catalog, SemanticPropertyGraph}
-import com.antgroup.openspg.reasoner.lube.catalog.struct.Field
-import com.antgroup.openspg.reasoner.lube.common.expr.{Aggregator, VConstant}
+import com.antgroup.openspg.reasoner.lube.common.expr.VConstant
 import com.antgroup.openspg.reasoner.lube.common.graph._
 import com.antgroup.openspg.reasoner.lube.common.pattern._
 import com.antgroup.openspg.reasoner.lube.common.rule.Rule
@@ -78,6 +76,8 @@ object LogicalPlanner {
                 PropertyVar(name, planWithoutResult.solved.getField(name, field))
               case IRVariable(name) =>
                 planWithoutResult.solved.getField(x.asInstanceOf[IRVariable])
+              case IRPath(name, elements) =>
+                PathVar(name, elements.map(e => planWithoutResult.solved.getVar(e.name)))
               case _ => throw UnsupportedOperationException(s"unsupported ${x}")
             }),
           t.asList)
@@ -317,9 +317,7 @@ object LogicalPlanner {
   }
 
   /**
-   * TODO:
-   * 1. group多点
-   * 2. 结合UDAF信息推导返回的字段数值类型
+   * Aggregation plan
    * @param aggregations
    * @param group
    * @param dependency
@@ -328,36 +326,10 @@ object LogicalPlanner {
    */
   private def planAggregate(
       aggregations: Aggregations,
-      group: List[String],
+      group: List[IRField],
       dependency: LogicalOperator)(implicit context: LogicalPlannerContext): LogicalOperator = {
-    val groupVar: List[Var] = group.map(NodeVar(_, null))
-    val aggMap = new mutable.HashMap[Var, Aggregator]()
-    var resolved = dependency.solved
-    for (p <- aggregations.pairs) {
-      val alias = ExprUtils.getRefVariableByExpr(p._2).head
-      if (resolved.alias2Types.isDefinedAt(alias)) {
-        val propertyVar = PropertyVar(alias, new Field(p._1.name, KTString, true))
-        aggMap.put(propertyVar, p._2)
-        resolved = resolved.addField((p._1.asInstanceOf[IRVariable], propertyVar))
-      } else {
-        val tmpPropertyVar = resolved.tmpFields(IRVariable(alias))
-        val propertyVar = PropertyVar(tmpPropertyVar.name, new Field(p._1.name, KTString, true))
-        aggMap.put(
-          propertyVar,
-          ExprUtils
-            .renameVariableInExpr(
-              p._2,
-              Map
-                .apply(
-                  (IRVariable(alias) -> IRProperty(
-                    tmpPropertyVar.name,
-                    tmpPropertyVar.field.name)))
-                .asInstanceOf[Map[IRField, IRProperty]])
-            .asInstanceOf[Aggregator])
-        resolved = resolved.addField((p._1.asInstanceOf[IRVariable], propertyVar))
-      }
-    }
-    Aggregate(dependency, groupVar, aggMap.toMap, resolved)
+    val aggregationPlanner = new AggregationPlanner(group, aggregations)
+    aggregationPlanner.plan(dependency)
   }
 
   private def planOrderAndSlice(
@@ -402,7 +374,7 @@ object LogicalPlanner {
   private def getStarts(block: Block): Set[String] = {
     block.transform[Set[String]] {
       case (AggregationBlock(_, _, group), groupList) =>
-        val groupAlias = group.map(_.split("\\.")(0)).toSet
+        val groupAlias = group.map(_.name).toSet
         if (groupList.head.isEmpty) {
           groupAlias
         } else {
