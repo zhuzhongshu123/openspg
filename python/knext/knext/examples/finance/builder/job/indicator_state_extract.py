@@ -45,7 +45,7 @@ class IndicatorStateExtract(BuilderJob):
 
         state_mapping = (
             SPGTypeMapping(spg_type_name=Finance.State)
-            .add_property_mapping("id2", Finance.State.id)
+            .add_property_mapping("id", Finance.State.id)
             .add_relation_mapping(
                 "derivedFrom", Finance.State.derivedFrom, Finance.Indicator
             )
